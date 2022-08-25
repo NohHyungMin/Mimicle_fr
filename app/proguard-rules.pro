@@ -33,7 +33,7 @@
 
 # To prevent obfusticating model classes
 # TODO : Make sure you do this for each feature module in your app
-#-keep class app.com.mimiclejp.data.* { *; }
-#-keep class app.com.mimiclejp.domain.* { *; }
+#-keep class app.com.mimiclees.data.* { *; }
+#-keep class app.com.mimiclees.domain.* { *; }
 
 

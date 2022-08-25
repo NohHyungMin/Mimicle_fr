@@ -5,13 +5,13 @@
     <data>
         <variable
             name="vm"
-            type="app.com.mimiclejp.ui.webview.WebViewerModel" />
+            type="app.com.mimiclees.ui.webview.WebViewerModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/activity_web_viewer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="app.com.mimiclejp.ui.webview.WebViewerActivity">
+        tools:context="app.com.mimiclees.ui.webview.WebViewerActivity">
 
         <FrameLayout
             android:id="@+id/webview_frame"
