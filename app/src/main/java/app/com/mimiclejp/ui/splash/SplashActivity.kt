@@ -2,11 +2,13 @@ package app.com.mimiclejp.ui.splash
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Base64
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -37,6 +39,7 @@ import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 import java.lang.Exception
+import java.security.MessageDigest
 
 @AndroidEntryPoint
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
@@ -94,17 +97,17 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         val versionCode = BuildConfig.VERSION_CODE.toString()
         with(viewModel) {
             pushInfo.observe(this@SplashActivity, Observer {
-                var pushInfo: PushInfo = it
-                Log.d("test", pushInfo.memno.toString())
+                var pushInfo: PushInfo? = it
+                //Log.d("test", pushInfo.memno.toString())
             })
             appMetaData.observe(this@SplashActivity, Observer {
-                var appMeta: AppMetaData = it
-                AppPreference(baseContext).setMainUrl(appMeta.data.mainurl.toString())
-                if(appMeta.data.vcode.toInt() > versionCode.toInt()){
+                var appMeta: AppMetaData? = it
+                AppPreference(baseContext).setMainUrl(appMeta?.data?.mainurl.toString())
+                if(appMeta?.data?.vcode?.toInt()!! > versionCode?.toInt()){
                     if(appMeta.data.forcedyn.uppercase() == "Y"){
                         val builder = AlertDialog.Builder(this@SplashActivity)
                         builder.setTitle("")
-                        builder.setMessage(appMeta.data.strupdate)
+                        builder.setMessage(appMeta?.data?.strupdate)
                         builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                             MapUtils.goStore(this@SplashActivity);
                             finish()
@@ -113,7 +116,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                     }else{
                         val builder = AlertDialog.Builder(this@SplashActivity)
                         builder.setTitle("")
-                        builder.setMessage(appMeta.data.strupdate)
+                        builder.setMessage(appMeta?.data?.strupdate)
                         builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                             MapUtils.goStore(this@SplashActivity);
                             finish()
@@ -127,7 +130,18 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                     delayHandler.sendMessageDelayed(Message(), 1000)
                 }
 
-                Log.d("test", appMeta.data.mainurl.toString())
+                Log.d("test", appMeta?.data?.mainurl.toString())
+            })
+            networkError.observe(this@SplashActivity, Observer {it ->
+                if(it == true) {
+                    val builder = AlertDialog.Builder(this@SplashActivity)
+                    builder.setTitle("")
+                    builder.setMessage(R.string.str_check_netword)
+                    builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                        finish()
+                    }
+                    builder.show()
+                }
             })
         }
     }

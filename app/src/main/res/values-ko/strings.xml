@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">Mimicle</string>
+    <string name="app_name">ミミクル</string>
 
     <string name="str_loading">loading.</string>
-    <string name="str_exit">Exit?</string>
+    <string name="str_exit">アプリを終了しますか?</string>
+    <string name="str_check_netword">インターネット接続を確認してください.</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_mimicle_channel</string>
 

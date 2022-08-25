@@ -2,6 +2,8 @@ package app.com.mimiclejp.api
 
 import app.com.mimiclejp.data.push.PushInfo
 import app.com.mimiclejp.data.splash.AppMetaData
+import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,7 +26,7 @@ interface ApiInterface {
     suspend fun getMeta(
         @Field("ostype") osType : String,
         @Field("vcode") versionCode : String
-    ) : AppMetaData
+    ) : ApiResponse<AppMetaData>
 
     //푸시 정보 전송
     @FormUrlEncoded
@@ -35,10 +37,10 @@ interface ApiInterface {
         @Field("pushkey") pushKey : String,
         @Field("uuid") uuid : String?,
         @Field("memno") memNo : String
-    ) : PushInfo
+    ) : ApiResponse<PushInfo>
 
     companion object {
-        private const val BASE_URL = "https://enc.mimicle.kr/"
+        private const val BASE_URL = "https://jac.mimicle.art/"
 
         fun create(): ApiInterface {
             val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
@@ -50,6 +52,7 @@ interface ApiInterface {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
+                .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiInterface::class.java)

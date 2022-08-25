@@ -98,8 +98,19 @@ class WebViewerActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity
     private fun initViewModelCallback() {
         with(viewModel) {
             pushInfo.observe(this@WebViewerActivity, Observer {
-                var pushInfo: PushInfo = it
-                Log.d("test", pushInfo.memno.toString())
+                var pushInfo: PushInfo? = it
+                //Log.d("test", pushInfo?.memno.toString())
+            })
+            networkError.observe(this@WebViewerActivity, Observer {it ->
+                if(it == true) {
+//                    val builder = androidx.appcompat.app.AlertDialog.Builder(this@WebViewerActivity)
+//                    builder.setTitle("")
+//                    builder.setMessage("network error")
+//                    builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+//                        finish()
+//                    }
+//                    builder.show()
+                }
             })
         }
     }
