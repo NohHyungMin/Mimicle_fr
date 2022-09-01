@@ -2,11 +2,13 @@ package app.com.mimiclees.ui.splash
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Base64
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -37,6 +39,7 @@ import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 import java.lang.Exception
+import java.security.MessageDigest
 
 @AndroidEntryPoint
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {

@@ -40,7 +40,7 @@ interface ApiInterface {
     ) : ApiResponse<PushInfo>
 
     companion object {
-        private const val BASE_URL = "https://jac.mimicle.art/"
+        private const val BASE_URL = "https://esc.mimicle.art/"
 
         fun create(): ApiInterface {
             val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }

@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">ミミクル</string>
+    <string name="app_name">Mimicle</string>
 
     <string name="str_loading">loading..</string>
-    <string name="str_exit">アプリを終了しますか?</string>
-    <string name="str_check_netword">インターネット接続を確認してください.</string>
+    <string name="str_exit">Quieres renunciar?</string>
+    <string name="str_check_netword">Comprueba tu conexión a Internet.</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_mimicle_channel</string>
 
     <!-- 페이스북 -->
-    <string name="facebook_app_id">749741009609775</string>
-    <string name="fb_login_protocol_scheme">fb749741009609775</string>
-    <string name="facebook_client_token">094b85d9443cc9e2bdc0ddfccf6d7f35</string>
+    <string name="facebook_app_id">3343238089231783</string>
+    <string name="fb_login_protocol_scheme">fb3343238089231783</string>
+    <string name="facebook_client_token">fe44b5ed232f1630a881e6663b2fabdb</string>
 
 </resources>
