@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mimicle</string>
+    <string name="app_name">Mímicle</string>
 
     <string name="str_loading">loading.</string>
     <string name="str_exit">Quieres renunciar?</string>
