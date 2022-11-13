@@ -1,10 +1,8 @@
 package app.com.mimiclees.ui.webview
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Dialog
-import android.app.DownloadManager
-import android.app.ProgressDialog
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -13,6 +11,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.icu.text.SimpleDateFormat
 //import android.location.Geocoder
 //import android.location.Location
 //import android.location.LocationListener
@@ -22,6 +21,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Message
+import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -31,6 +32,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.FileProvider
 import app.com.mimiclees.BuildConfig
 import app.com.mimiclees.R
 import app.com.mimiclees.common.storage.AppPreference
@@ -43,7 +45,10 @@ import java.util.*
 import androidx.lifecycle.Observer
 import app.com.mimiclees.base.BaseActivity
 import app.com.mimiclees.databinding.ActivityWebviewBinding
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class WebViewerActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity_webview), SensorEventListener {
@@ -64,6 +69,10 @@ class WebViewerActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity
 
     private lateinit var pushRepository: PushRepository
     private val viewModel: WebViewerModel by viewModels()
+
+    val REQ_SELECT_IMAGE = 2001
+    var filePathCallback: ValueCallback<Array<Uri>>? = null
+    var photoUri: Uri? = null;
 //    {
 //        object : ViewModelProvider.Factory {
 //            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -292,6 +301,26 @@ class WebViewerActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity
             }
             (resultMsg?.obj as WebView.WebViewTransport).webView = mWebViewPop
             resultMsg.sendToTarget()
+            return true
+        }
+
+        override fun onShowFileChooser(webView: WebView?, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?): Boolean {
+            val permissionListener = object : PermissionListener {
+                override fun onPermissionGranted() {
+                    selectImage(filePathCallback)
+                }
+                override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
+                    filePathCallback?.onReceiveValue(null)
+                    return
+                }
+            }
+
+            TedPermission.with(mContext)
+                .setPermissionListener(permissionListener)
+                .setPermissions(
+                    Manifest.permission.CAMERA,  // 전화걸기 및 관리
+                ).check()
+            var isCapture = fileChooserParams?.isCaptureEnabled ?: false//
             return true
         }
     }
@@ -570,7 +599,85 @@ class WebViewerActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity
         viewModel.setPushInfo(param)
     }
 
+    fun selectImage(filePathCallback: ValueCallback<Array<Uri>>?) {
+        this.filePathCallback?.onReceiveValue(null)
+        this.filePathCallback = filePathCallback
 
+        var state = Environment.getExternalStorageState()
+        if (!TextUtils.equals(state, Environment.MEDIA_MOUNTED)) {
+            return
+        }
+
+        var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.resolveActivity(packageManager)?.let {
+            createImageFile()?.let {
+                photoUri = FileProvider.getUriForFile(this@WebViewerActivity, BuildConfig.APPLICATION_ID + ".provider", it)
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            }
+        }
+
+
+        var intent = Intent(Intent.ACTION_PICK).apply {
+            type = MediaStore.Images.Media.CONTENT_TYPE
+            data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        }
+
+        Intent.createChooser(intent, "사진 가져올 방법을 선택하세요").run {
+            putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
+            startActivityForResult(this, REQ_SELECT_IMAGE)
+        }
+    }
+
+    private fun createImageFile(): File? {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            mContext?.getExternalFilesDir(Environment.DIRECTORY_PICTURES) /* directory */
+        ).apply {
+            Log.i("syTest", "Created File AbsolutePath : $absolutePath")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQ_SELECT_IMAGE -> {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    filePathCallback?.let {
+
+                        var imageData = data
+
+                        if (imageData == null) {
+                            imageData = Intent()
+                            imageData?.data = photoUri
+                        }
+
+                        if (imageData?.data == null) {
+                            imageData?.data = photoUri
+                        }
+
+
+                        it.onReceiveValue(
+                            WebChromeClient.FileChooserParams.parseResult(
+                                resultCode,
+                                imageData
+                            )
+                        )
+                        filePathCallback = null
+                    }
+                } else {
+
+                    filePathCallback?.onReceiveValue(null)
+                    filePathCallback = null
+
+                }
+            }
+        }
+    }
     //위치 가져오기
 //    private val locationManager by lazy {
 //        getSystemService(Context.LOCATION_SERVICE) as LocationManager
