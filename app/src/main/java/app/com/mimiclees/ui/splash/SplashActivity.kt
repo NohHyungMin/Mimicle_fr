@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -27,6 +28,9 @@ import app.com.mimiclees.ui.webview.WebViewerActivity
 import app.com.mimiclees.util.GoogleUtil
 import app.com.mimiclees.util.MapUtils
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -63,6 +67,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
 
+        getDynamicLink()
         initViewModelCallback()
 
         checkIntent()
@@ -92,6 +97,23 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
 //        }
     }
 
+    //다이나믹 링크 받기
+    private fun getDynamicLink() {
+        Firebase.dynamicLinks
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData: PendingDynamicLinkData? ->
+                // Get deep link from result (may be null if no link is found)
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                    //ex) https://mimicle.art/app?linkurl=https://mimicle.art/app?no=101
+                    var dynaminLink = deepLink?.getQueryParameter("linkurl")
+                    if(dynaminLink != null)
+                        AppPreference(baseContext).setLandingUrl(dynaminLink)
+                }
+            }
+            .addOnFailureListener(this) { e -> Log.w("test", "getDynamicLink:onFailure", e) }
+    }
 
     private fun initViewModelCallback() {
         val versionCode = BuildConfig.VERSION_CODE.toString()
