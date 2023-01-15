@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="app.com.mimiclees">
+    package="app.com.mimiclefr">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -22,7 +22,7 @@
         <package android:name="com.kakao.talk" />
     </queries>
     <application
-        android:name="app.com.mimiclees.MimicleApplication"
+        android:name="app.com.mimiclefr.MimicleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -50,7 +50,7 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
         <activity
-            android:name="app.com.mimiclees.ui.splash.SplashActivity"
+            android:name="app.com.mimiclefr.ui.splash.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>
@@ -59,7 +59,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="app.com.mimiclees.ui.webview.WebViewerActivity"
+        <activity android:name="app.com.mimiclefr.ui.webview.WebViewerActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustUnspecified"
             >
@@ -75,7 +75,7 @@
         </activity>
 
         <service
-            android:name="app.com.mimiclees.fcm.MyFirebaseMessagingService"
+            android:name="app.com.mimiclefr.fcm.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

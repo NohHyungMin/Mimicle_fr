@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="app.com.mimiclees.ui.splash.SplashViewModel" />
+            type="app.com.mimiclefr.ui.splash.SplashViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
