@@ -136,11 +136,13 @@ class WebViewerActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity
 
     override fun onResume() {
         super.onResume()
+        web_content?.loadUrl("javascript:callApp()")
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     override fun onPause() {
         super.onPause()
+        web_content?.loadUrl("javascript:callBackground()")
         sensorManager.unregisterListener(this)
     }
 
