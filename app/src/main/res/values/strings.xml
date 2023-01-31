@@ -2,8 +2,8 @@
     <string name="app_name">Mimicle</string>
 
     <string name="str_loading">loading..</string>
-    <string name="str_exit">Quieres renunciar?</string>
-    <string name="str_check_netword">Comprueba tu conexión a Internet.</string>
+    <string name="str_exit">Êtes-vous sûr de vouloir quitter?</string>
+    <string name="str_check_netword">Vérifiez votre connection internet.</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_mimicle_channel</string>
 

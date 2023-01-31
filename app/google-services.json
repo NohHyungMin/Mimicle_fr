@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "242013044766",
-    "project_id": "mimicle-es",
-    "storage_bucket": "mimicle-es.appspot.com"
+    "project_number": "18973684930",
+    "project_id": "mimicle-fr",
+    "storage_bucket": "mimicle-fr.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:242013044766:android:278f9dee53db1f7b3cee0f",
+        "mobilesdk_app_id": "1:18973684930:android:5a3fad5235a33331db375b",
         "android_client_info": {
-          "package_name": "app.com.mimiclees"
+          "package_name": "app.com.mimiclefr"
         }
       },
       "oauth_client": [
         {
-          "client_id": "242013044766-9onlvtdbk7qu1rvsfooav7vr91ms2n6p.apps.googleusercontent.com",
+          "client_id": "18973684930-j4ha7hcctral9suu2e3grvkeg9e2aiov.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBxFb4lWyoxsqlISsA0cgs_JRTT6l2Nu1Q"
+          "current_key": "AIzaSyDDCo_vAPld5Ol5RXU3aj0KIbL_ljhKrrw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "242013044766-9onlvtdbk7qu1rvsfooav7vr91ms2n6p.apps.googleusercontent.com",
+              "client_id": "18973684930-j4ha7hcctral9suu2e3grvkeg9e2aiov.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

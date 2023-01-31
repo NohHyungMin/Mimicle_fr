@@ -136,7 +136,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra("url", messageBody!!.landingUrl )
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.FLAG_IMMUTABLE)
         val channelId = getString(R.string.default_notification_channel_id)
 
         var pathUri: Uri? = null
